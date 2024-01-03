@@ -1,0 +1,67 @@
+<div class="surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden">
+    <div class="flex flex-column align-items-center justify-content-center">
+        <div
+            style="border-radius:56px; padding:0.3rem; background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%);">
+            <div class="w-full surface-card py-8 px-5 sm:px-8" style="border-radius:53px">
+                <div class="text-center mb-5">
+                    <img src="assets/demo/images/login/book.png" alt="Image" height="200" class="mb-3">
+                    <br>
+                </div>
+
+                <div>
+                    <div class="p-fluid p-formgrid grid">
+                        <div class="field col-12 md:col-6">
+                            <label htmlFor="firstname2">Firstname</label>
+                            <input pInputText id="firstname2" [(ngModel)]="registerReq.nom" type="text" />
+                        </div>
+                        <div class="field col-12 md:col-6">
+                            <label htmlFor="lastname2">Lastname</label>
+                            <input pInputText id="lastname2" [(ngModel)]="registerReq.prenom" type="text" />
+                        </div>
+                        <div class="field col-12 md:col-6">
+                            <label htmlFor="city">Email</label>
+                            <input pInputText id="email" [(ngModel)]="registerReq.email" type="text" />
+                        </div>
+                        <div class="field col-12 md:col-6">
+                            <label htmlFor="zip">Password</label>
+                            <input pInputText id="password" [(ngModel)]="registerReq.password" type="text" />
+                        </div>
+                        <div class="field col-12 md:col-6">
+                            <label htmlFor="zip">Birthday</label>
+                            <p-calendar [showIcon]="true" [(ngModel)]="birth" inputId="icon"
+                                dateFormat="dd/mm/yy"></p-calendar>
+                        </div>
+                        <div class="field col-12 md:col-6">
+                            <label htmlFor="zip">Phone number</label>
+                            <input pInputText id="phonenumber" [(ngModel)]="registerReq.numTel" type="text" />
+                        </div>
+                        <div class="field col-12 md:col-6">
+                            <label htmlFor="zip">Adress</label>
+                            <input pInputText id="address" [(ngModel)]="registerReq.adresse" type="text" />
+                        </div>
+                        <div class="field col-12 md:col-6">
+                            <label htmlFor="file">Photo</label><br>
+                            <input type="file" mode="basic" name="file" rows="4" (change)="onFileSelected($event)">
+                        </div>
+                    </div>
+                    <button pButton pRipple label="Register" class="w-full p-3 text-xl" (click)="Register()"></button>
+                    <br><br><br><br>
+                    <div class="field col-12 md:col-6">
+                        <label htmlFor="file">Already have an account ? </label><br>
+                    </div>
+                    <button pButton pRipple label="Log in" class="w-full p-3 text-xl" (click)="Login()"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<p-dialog header="Dialog" [(visible)]="mess" [modal]="true" showEffect="fade" [style]="{width: '30vw'}"
+    [breakpoints]="{'960px': '75vw'}">
+    <p class="line-height-3 m-0">
+        {{ message }}
+    </p>
+    <ng-template pTemplate="footer">
+        <button pButton icon="pi pi-check" (click)="mess=false" label="Ok" class="p-button-outlined"></button>
+    </ng-template>
+</p-dialog>

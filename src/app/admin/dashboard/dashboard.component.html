@@ -1,0 +1,361 @@
+<div class="grid">
+    <div class="col-12 lg:col-6 xl:col-3">
+        <div class="card mb-0">
+            <div class="flex justify-content-between mb-3">
+                <div>
+                    <span class="block text-500 font-medium mb-3">Books <br><br><br></span>
+                    <div class="text-900 font-medium text-xl">{{ nbLivreTotal }}</div>
+                </div>
+                <div class="flex align-items-center justify-content-center bg-blue-100 border-round"
+                    [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+                    <i class="pi pi-book text-blue-500 text-xl"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 lg:col-6 xl:col-3">
+        <div class="card mb-0">
+            <div class="flex justify-content-between mb-3">
+                <div>
+                    <span class="block text-500 font-medium mb-3">Number of borrowed books<br><br></span>
+                    <div class="text-900 font-medium text-xl">{{ NbEmprunt }}</div>
+                </div>
+                <div class="flex align-items-center justify-content-center bg-orange-100 border-round"
+                    [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+                    <i class="pi pi-map-marker text-orange-500 text-xl"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 lg:col-6 xl:col-3">
+        <div class="card mb-0">
+            <div class="flex justify-content-between mb-3">
+                <div>
+                    <span class="block text-500 font-medium mb-3">Number of emprunts this month</span>
+                    <div class="text-900 font-medium text-xl">{{ nbEmpruntMois }}</div>
+                </div>
+                <div class="flex align-items-center justify-content-center bg-cyan-100 border-round"
+                    [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+                    <i class="pi pi-inbox text-cyan-500 text-xl"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 lg:col-6 xl:col-3">
+        <div class="card mb-0">
+            <div class="flex justify-content-between mb-3">
+                <div>
+                    <span class="block text-500 font-medium mb-3">Number of reservation this month</span>
+                    <div class="text-900 font-medium text-xl">{{nbReservationMois}}</div>
+                </div>
+                <div class="flex align-items-center justify-content-center bg-purple-100 border-round"
+                    [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+                    <i class="pi pi-comment text-purple-500 text-xl"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 lg:col-6 xl:col-12">
+        <div class="card mb-0">
+            <div class="flex justify-content-between mb-3">
+                <div>
+                    <span class="block text-500 font-medium mb-3">Number of reservation in attend</span>
+                    <div class="text-900 font-medium text-xl">{{nbReservationEnAttente}}</div>
+                </div>
+                <div class="flex align-items-center justify-content-center bg-purple-100 border-round"
+                    [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+                    <i class="pi pi-comment text-purple-500 text-xl"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 xl:col-12">
+        <div class="card px-6 py-6">
+            <p-toolbar styleClass="mb-4">
+                <ng-template pTemplate="left">
+                    <h5 class="m-0">Books list</h5>
+                </ng-template>
+                <ng-template pTemplate="right">
+                    <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2"
+                        (click)="openNew()"></button>
+                </ng-template>
+            </p-toolbar>
+            <p-table [value]="books" [paginator]="true" [rows]="5" responsiveLayout="scroll">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Image</th>
+                        <th pSortableColumn="isbn">ISBN <p-sortIcon field="isbn"></p-sortIcon></th>
+                        <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
+                        <th pSortableColumn="date">Publication date <p-sortIcon field="date"></p-sortIcon></th>
+                        <th pSortableColumn="author">Author <p-sortIcon field="author"></p-sortIcon></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-b>
+                    <tr>
+                        <td style="width: 15%; min-width: 5rem;">
+                            <img src="data:image/png;base64,{{b.image}}" class="shadow-4" width="50">
+                        </td>
+                        <td style="width: 35%; min-width: 7rem;">{{b.isbn}}</td>
+                        <td style="width: 35%; min-width: 7rem;">{{b.titre}}</td>
+                        <td style="width: 35%; min-width: 8rem;">{{b.datePublication}}</td>
+                        <td style="width: 35%; min-width: 8rem;">{{b.nomAuteur}}</td>
+                        <td style="width: 15%;">
+                            <button pButton pRipple type="button" icon="pi pi-search"
+                                class="p-button p-component p-button-text p-button-icon-only"
+                                (click)="book=b;bookDialog=true"></button>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+        <div class="card">
+            <div class="flex justify-content-between align-items-center mb-5">
+                <h5>Books and copies information</h5>
+            </div>
+            <ul class="list-none p-0 m-0">
+                <li *ngFor="let book of booksAndCopies | keyvalue"
+                    class="flex flex-column md:flex-row md:align-items-center md:justify-content-between mb-4">
+                    <div>
+                        <h5>{{ book.key }}</h5>
+                        <div class="mt-1 text-600">Total: {{ book.value.nbExemplaireTotal }} | Disponibles: {{
+                            book.value.nbCopiesDisponibles }}</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+
+    <div class="col-12 xl:col-12">
+        <div class="card px-6 py-6">
+            <p-toolbar styleClass="mb-4">
+                <ng-template pTemplate="left">
+                    <h5 class="m-0">Users list</h5>
+                </ng-template>
+            </p-toolbar>
+            <p-table [value]="users" [paginator]="true" [rows]="5" responsiveLayout="scroll">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Image</th>
+                        <th pSortableColumn="isbn">First Name <p-sortIcon field="isbn"></p-sortIcon></th>
+                        <th pSortableColumn="name">Last Name <p-sortIcon field="name"></p-sortIcon></th>
+                        <th pSortableColumn="date">Role <p-sortIcon field="date"></p-sortIcon></th>
+                        <th pSortableColumn="Birthday">Birthday <p-sortIcon field="Birthday"></p-sortIcon></th>
+                        <th pSortableColumn="Adress">Adress <p-sortIcon field="Adress"></p-sortIcon></th>
+                        <th pSortableColumn="Email">Email <p-sortIcon field="Email"></p-sortIcon></th>
+                        <th pSortableColumn="Phone">Phone number <p-sortIcon field="Phone"></p-sortIcon></th>
+                        <th pSortableColumn="Emprunts">Emprunts</th>
+                        <th pSortableColumn="Reservation">Reservation</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-u>
+                    <tr>
+                        <td style="width: 15%; min-width: 5rem;">
+                            <img src="data:image/png;base64,{{u.image}}" class="shadow-4" width="50">
+                        </td>
+                        <td style="width: 35%; min-width: 7rem;">{{u.nom}}</td>
+                        <td style="width: 35%; min-width: 7rem;">{{u.prenom}}</td>
+                        <td style="width: 35%; min-width: 8rem;">{{u.role}}</td>
+                        <td style="width: 35%; min-width: 8rem;">{{u.dateNaissance}}</td>
+                        <td style="width: 35%; min-width: 8rem;">{{u.adresse}}</td>
+                        <td style="width: 35%; min-width: 8rem;">{{u.email}}</td>
+                        <td style="width: 35%; min-width: 8rem;">{{u.numTel}}</td>
+                        <td style="width: 15%;">
+                            <button pButton pRipple type="button" icon="pi pi-pencil"
+                                class="p-button-rounded p-button-success mr-2" (click)="getEmprunts(u.idUser)"></button>
+                        </td>
+                        <td style="width: 15%;">
+                            <button pButton pRipple type="button" icon="pi pi-pencil"
+                                class="p-button-rounded p-button-success mr-2"
+                                (click)="getReservation(u.idUser)"></button>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+
+
+    <div class="col-12 xl:col-12">
+        <div class="card px-6 py-6">
+            <p-toolbar styleClass="mb-4">
+                <ng-template pTemplate="left">
+                    <h5 class="m-0">Categorie list</h5>
+                </ng-template>
+                <ng-template pTemplate="right">
+                    <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2"
+                        (click)="openNewCategory()"></button>
+                </ng-template>
+            </p-toolbar>
+            <p-table [value]="categories" [paginator]="true" [rows]="5" responsiveLayout="scroll">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th pSortableColumn="isbn">Id category<p-sortIcon field="isbn"></p-sortIcon></th>
+                        <th pSortableColumn="name">Category name<p-sortIcon field="name"></p-sortIcon></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-c>
+                    <tr>
+                        <td style="width: 35%; min-width: 7rem;">{{c.idCategorie}}</td>
+                        <td style="width: 35%; min-width: 7rem;">{{c.nomCategorie}}</td>
+                        <td style="width: 15%;">
+                            <button pButton pRipple type="button" icon="pi pi-pencil"
+                                class="p-button-rounded p-button-success mr-2"
+                                (click)="editCategory(c)"></button>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+</div>
+<p-dialog [(visible)]="bookDialog" [style]="{width: '450px'}" header="New book" [modal]="true" class="p-fluid">
+    <ng-template pTemplate="content">
+        <div class="field">
+            <label for="description">ISBN</label>
+            <p-inputNumber [ngClass]="{'ng-invalid ng-dirty' : submitted && !book.isbn}" required mode="decimal"
+                [(ngModel)]="book.isbn" [showButtons]="true" [min]="0" [max]="100">
+            </p-inputNumber>
+            <small class="ng-dirty ng-invalid" *ngIf="submitted && !book.isbn">ISBN is required.</small>
+
+        </div>
+        <div class="field">
+            <label for="name">Title</label>
+            <input type="text" pInputText id="name" [(ngModel)]="book.titre" required autofocus
+                [ngClass]="{'ng-invalid ng-dirty' : submitted && !book.titre}" />
+            <small class="ng-dirty ng-invalid" *ngIf="submitted && !book.titre">Title is required.</small>
+        </div>
+        <div class="field">
+            <label for="name">Author</label>
+            <input type="text" pInputText id="name" [(ngModel)]="book.nomAuteur" required autofocus
+                [ngClass]="{'ng-invalid ng-dirty' : submitted && !book.nomAuteur}" />
+            <small class="ng-dirty ng-invalid" *ngIf="submitted && !book.nomAuteur">Author is required.</small>
+        </div>
+        <div class="field" *ngIf="!book.idLivre">
+            <label for="description">Publication date</label>
+            <p-calendar [ngClass]="{'ng-invalid ng-dirty' : submitted && !pubDate}" [showIcon]="true"
+                [(ngModel)]="pubDate" inputId="icon" dateFormat="dd/mm/yy" required></p-calendar>
+            <small class="ng-dirty ng-invalid" *ngIf="submitted && !pubDate">Publication date is required.</small>
+        </div>
+        <div class="field" *ngIf="!book.idLivre">
+            <label htmlFor="file">Cateogies</label><br>
+            <p-dropdown [options]="categories" [ngClass]="{'ng-invalid ng-dirty' : submitted && !categorie}"
+                [(ngModel)]="categorie" placeholder="Sélectionnez une catégorie" [showClear]="true"
+                optionLabel="nomCategorie"> </p-dropdown>
+            <small class="ng-dirty ng-invalid" *ngIf="submitted && !categorie">Categorie is required.</small>
+        </div>
+        <div class="field">
+            <label for="description">Number of copies</label>
+            <p-inputNumber [ngClass]="{'ng-invalid ng-dirty' : submitted && !book.nbExemplaire}" mode="decimal" required
+                [(ngModel)]="book.nbExemplaire" [showButtons]="true" [min]="0" [max]="100">
+            </p-inputNumber>
+            <small class="ng-dirty ng-invalid" *ngIf="submitted && !book.nbExemplaire">Number of copies is
+                required.</small>
+
+        </div>
+        <div class="field" *ngIf="!book.idLivre">
+            <label htmlFor="file">Photo</label><br>
+            <input type="file" mode="basic" [ngClass]="{'ng-invalid ng-dirty' : submitted && !file}" required
+                name="file" rows="4" (change)="onFileSelected($event)">
+            <small class="ng-dirty ng-invalid" *ngIf="submitted && !file">Cover photo is required.</small>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+        <button pButton pRipple label="Delete" icon="pi pi-times" class="p-button-text"
+            (click)="delete(book.idLivre)"></button>
+        <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="save()"></button>
+    </ng-template>
+</p-dialog>
+
+<p-dialog [(visible)]="empruntDialog" [style]="{width: '450px'}" header="New book" [modal]="true" class="p-fluid">
+    <p-table #dt [value]="empruntsuser" responsiveLayout="scroll" [rowHover]="true" dataKey="id">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Start date</th>
+                <th>End date</th>
+                <th>Etat</th>
+                <th>Livre</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-emp>
+            <tr>
+                <td style="width:14%; min-width:10rem;">
+                    {{emp.dateDebut}}
+                </td>
+                <td style="width:14%; min-width:10rem;"><span class="p-column-title">Code</span>
+                    {{emp.dateFin}}
+                </td>
+                <td style="width:14%; min-width:10rem;">
+                    {{emp.etat}}
+                </td>
+                <td style="width:14%; min-width:10rem;">
+                    {{emp.livre.titre}}
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple icon="pi pi-times" class="p-button-text" label="Close"
+            (click)="empruntDialog = false; empruntsuser=null"></button>
+    </ng-template>
+</p-dialog>
+
+
+<p-dialog [(visible)]="reservationDialog" [style]="{width: '450px'}" header="New book" [modal]="true" class="p-fluid">
+    <p-table #dt [value]="resrevationuser" responsiveLayout="scroll" [rowHover]="true" dataKey="id">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Reservation date</th>
+                <th>Start date</th>
+                <th>End date</th>
+                <th>Prise</th>
+                <th>Livre</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rev>
+            <tr>
+                <td style="width:14%; min-width:10rem;">
+                    {{rev.dateReservation}}
+                </td>
+                <td style="width:14%; min-width:10rem;"><span class="p-column-title">Code</span>
+                    {{rev.dateDebut}}
+                </td>
+                <td style="width:14%; min-width:10rem;">
+                    {{rev.dateFin}}
+                </td>
+                <td style="width:14%; min-width:10rem;">
+                    {{rev.prise}}
+                </td>
+                <td style="width:14%; min-width:10rem;">
+                    {{rev.livre.titre}}
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple icon="pi pi-times" class="p-button-text" label="Close"
+            (click)="reservationDialog = false; resrevationuser=null"></button>
+    </ng-template>
+</p-dialog>
+
+<p-dialog [(visible)]="CategoryDialog" [style]="{width: '450px'}" header="New category" [modal]="true" class="p-fluid">
+    <ng-template pTemplate="content">
+        <div class="field">
+            <label for="name">Category name</label>
+            <input type="text" pInputText id="name" [(ngModel)]="c.nomCategorie" required autofocus
+                [ngClass]="{'ng-invalid ng-dirty' : submitted && !c.nomCategorie}" />
+            <small class="ng-dirty ng-invalid" *ngIf="submitted && !c.nomCategorie">Category name is required.</small>
+        </div>
+       
+        
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialogCategory()"></button>
+        <button *ngIf="c.idCategorie!=null" pButton pRipple label="Delete" icon="pi pi-times" class="p-button-text"
+            (click)="deleteCategory(c.idCategorie)"></button>
+        <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveCategory()"></button>
+    </ng-template>
+</p-dialog>
