@@ -33,7 +33,7 @@ export class AppLayoutComponent implements OnDestroy {
                     }
                 });
             }
-
+/*
             if (!this.profileMenuOutsideClickListener) {
                 this.profileMenuOutsideClickListener = this.renderer.listen('document', 'click', event => {
                     const isOutsideClicked = !(this.appTopbar.menu.nativeElement.isSameNode(event.target) || this.appTopbar.menu.nativeElement.contains(event.target)
@@ -43,7 +43,7 @@ export class AppLayoutComponent implements OnDestroy {
                         this.hideProfileMenu();
                     }
                 });
-            }
+            }*/
 
             if (this.layoutService.state.staticMenuMobileActive) {
                 this.blockBodyScroll();

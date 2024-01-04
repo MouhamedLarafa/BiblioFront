@@ -36,6 +36,12 @@ export class LoginComponent {
           this.authService.getConnectedUser().subscribe(data => {
             localStorage.setItem('role', data.role);
             console.log(localStorage.getItem('role')); 
+            if(data.role=='ADMIN'){
+              this.router.navigate(['/Admin/dashboard']);
+            }
+            else{
+              this.router.navigate(['/User/books']);
+            }
           })
         }
       });

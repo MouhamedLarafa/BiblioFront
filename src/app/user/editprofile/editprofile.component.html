@@ -1,0 +1,30 @@
+
+<div class="col-12">
+    <div class="card">
+        <h5>User details</h5>
+        <p-splitter [style]="{'height': '300px'}" [panelSizes]="[30,70]">
+            <ng-template pTemplate>
+                <div class="col flex align-items-center justify-content-center">
+                    <img src="data:image/png;base64,{{user.image}}" class="shadow-4" width="180">
+                </div>
+            </ng-template>
+            <ng-template pTemplate>
+                <p-splitter [panelSizes]="[50,50]" [minSizes]="[10,10]">
+                    <ng-template pTemplate>
+                        <div>
+                            <h5>Firt Name: {{user.nom}}</h5>
+                            <h5>Last Name: {{user.prenom}}</h5>
+                            <h5>Phone number: {{user.numTel}}</h5>
+                            <h5>Email: {{user.email}}</h5>
+                            <h5>Adress: {{user.adresse}}</h5>
+                            
+                        </div>
+                    </ng-template>
+                </p-splitter>
+            </ng-template>
+        </p-splitter>
+    </div>
+</div>
+
+<embed [src]="getSafeContent()" type="application/pdf" width="100%" height="600px">
+

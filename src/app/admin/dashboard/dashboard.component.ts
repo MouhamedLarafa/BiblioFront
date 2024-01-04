@@ -59,19 +59,35 @@ export class DashboardComponent {
   empruntsuser!:Emprunt[];
   resrevationuser!:Reservation[];
   c!:Categorie;
+  emps!:Emprunt[];
+  ress!:Reservation[];
+  e!:Emprunt;
+  etattt!:boolean;
 
+  empruntEditDialog!:boolean;
+
+  etatOptions = [
+    { label: 'True', value: true },
+    { label: 'False', value: false }
+];
+
+  
 
   constructor(private datePipe: DatePipe, private router: Router, private productService: ProductService, public layoutService: LayoutService, private authService: AuthenticationService) {
     
   }
 
   ngOnInit() {
-    if (localStorage.getItem('role') ==='') {
+    
+    if(!localStorage.getItem('authToken')){
       this.router.navigate(['/Authentification/login']);
     }
     else if (localStorage.getItem('role') != "ADMIN") {
-      this.router.navigate(['/notfound']);
+      this.router.navigate(['/auth/access']);
     }
+
+    this.authService.getAllReservations().subscribe(data=>this.ress = data);
+    this.authService.getAllEmprunts().subscribe(data => this.emps = data);
 
     this.authService.retrieveAllLivres().subscribe(data => this.books = data);
     this.authService.retrieveAllCategories().subscribe(data => this.categories = data);
@@ -101,6 +117,39 @@ export class DashboardComponent {
 
   }
 
+  
+
+  hideempruntDialog(){
+    this.empruntEditDialog=false;
+    this.etattt=null;
+  }
+
+  saveEmprunt(){
+    console.log(this.etattt);
+    console.log(this.e.idEmprunt);
+
+    this.e.etat=this.etattt;
+    this.authService.editEmprunt(this.e).subscribe(data => window.location.reload());
+  }
+
+  showEditEmprunt(el:Emprunt){
+    this.e=el;
+    this.empruntEditDialog=true;
+  }
+
+
+
+
+
+
+
+
+
+
+
+  deleteres(id: number){
+    this.authService.deletereservation(id).subscribe(data=> window.location.reload())
+  }
   getEmprunts(id :number){
     this.authService.getEmpruntsByUser(id).subscribe(data => this.empruntsuser = data);
     this.empruntDialog = true;

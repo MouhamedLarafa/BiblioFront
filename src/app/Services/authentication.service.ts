@@ -27,6 +27,12 @@ export class AuthenticationService {
     return this.http.post<AuthenticationResponse>(`${this.url}authentification/v1/authenticate`, authReq);
   }
 
+  
+  logout(){
+    return this.http.put(`${this.url}authentification/v1/logout`, {headers : this.headers});
+  }
+
+
   register(registerReq:RegisterRequest, file :File){
     const formData = new FormData();
     if(file){
@@ -141,6 +147,39 @@ export class AuthenticationService {
 
   getReservationsByUser(id:number):Observable<Reservation[]>{
     return this.http.get<Reservation[]>(`${this.url}reservation/reservationbyuser/${id}`, { headers: this.headers });
+  }
+  
+  addReservation(reservation: Reservation, id: number) {
+    return this.http.post<any>(`${this.url}reservation/add/${id}`, reservation, { headers: this.headers });
+  }
 
+  addEmprunt(emprunt: Emprunt, id: number) {
+    return this.http.post<any>(`${this.url}emprunt/add/${id}`, emprunt, { headers: this.headers });
+  }
+
+  getEmpruntsUser(): Observable<Emprunt[]> {
+    return this.http.get<Emprunt[]>(`${this.url}emprunt/empruntsuser`, { headers: this.headers });
+  }
+
+  getReservationsUser(): Observable<Reservation[]> {
+    return this.http.get<Reservation[]>(`${this.url}reservation/reservationsuser`, { headers: this.headers });
+  }
+
+  deletereservation(id:number){
+    return this.http.delete(`${this.url}reservation/deletereservation/${id}`, { headers: this.headers });
+  }
+  
+  
+  getAllReservations(): Observable<Reservation[]> {
+    return this.http.get<Reservation[]>(`${this.url}reservation/all`, { headers: this.headers });
+  }
+
+
+  getAllEmprunts(): Observable<Emprunt[]> {
+    return this.http.get<Emprunt[]>(`${this.url}emprunt/all`, { headers: this.headers });
+  }
+
+  editEmprunt(emprunt: Emprunt) {
+    return this.http.put<any>(`${this.url}emprunt/edit`, emprunt, { headers: this.headers });
   }
 }

@@ -1,6 +1,8 @@
 import { OnInit } from '@angular/core';
 import { Component } from '@angular/core';
 import { LayoutService } from './service/app.layout.service';
+import { Router } from '@angular/router';
+import { AuthenticationService } from 'src/app/Services/authentication.service';
 
 @Component({
     selector: 'app-menu',
@@ -10,14 +12,61 @@ export class AppMenuComponent implements OnInit {
 
     model: any[] = [];
 
-    constructor(public layoutService: LayoutService) { }
+    constructor(public router : Router, public layoutService: LayoutService, private authService:AuthenticationService) { }
 
     ngOnInit() {
+        if (localStorage.getItem('role') != "ADMIN") {
+            this.model = [
+                {
+                    label: 'User',
+                    items: [
+                        { label: 'Books', icon: 'pi pi-fw pi-home', routerLink: ['/User/books'] },
+                        { label: 'My reservations', icon: 'pi pi-fw pi-home', routerLink: ['/User/myreservations'] },
+                        { label: 'My borrewed books', icon: 'pi pi-fw pi-home', routerLink: ['/User/myemprunts'] }
+                    ]
+                },
+                {
+                    label: 'Settings',
+                    items: [
+                        { label: 'Profile', icon: 'pi pi-fw pi-sign-out', routerLink: ['/User/profile']},
+                        { label: 'Log out', icon: 'pi pi-fw pi-sign-out', command: () => this.logout() },
+                    ]
+                }
+                
+            ]
+        }
+        else{
+            this.model = [
+                {
+                    label: 'Home',
+                    items: [
+                        { label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/Admin/dashboard'] }
+                    ]
+                },
+                {
+                    label: 'User',
+                    items: [
+                        { label: 'Books', icon: 'pi pi-fw pi-home', routerLink: ['/User/books'] },
+                        { label: 'My reservations', icon: 'pi pi-fw pi-home', routerLink: ['/User/myreservations'] },
+                        { label: 'My borrewed books', icon: 'pi pi-fw pi-home', routerLink: ['/User/myemprunts'] }
+                    ]
+                },
+                {
+                    label: 'Settings',
+                    items: [
+                        { label: 'Profile', icon: 'pi pi-fw pi-sign-out', routerLink: ['/User/profile']},
+                        { label: 'Log out', icon: 'pi pi-fw pi-sign-out', command: () => this.logout() },
+                    ]
+                }
+            ]
+        }
+
+/*
         this.model = [
             {
                 label: 'Home',
                 items: [
-                    { label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/'] }
+                    { label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/Admin/dashboard'] }
                 ]
             },
             {
@@ -160,6 +209,12 @@ export class AppMenuComponent implements OnInit {
                     }
                 ]
             }
-        ];
+        ];*/
     }
+
+    logout() {
+        localStorage.removeItem('authToken');
+        this.authService.logout().subscribe();
+        this.router.navigate(['/Authentification/login']);
+      }
 }

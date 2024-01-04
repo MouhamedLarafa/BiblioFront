@@ -13,6 +13,7 @@ export class User {
     password!: string;
     numTel!: string;
     image!:ArrayBuffer;
+    card!:ArrayBuffer;
     emprunts!: Emprunt[];
     reservations!: Reservation[];
   }

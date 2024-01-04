@@ -1,0 +1,157 @@
+<div class="grid">
+	<div class="col-12">
+		<div class="card">
+			<h5>List of all books</h5>
+			<p-dataView #dv [value]="books" [paginator]="true" [rows]="9" filterBy="titre" [sortField]="sortField"
+				[sortOrder]="sortOrder" layout="grid">
+				<ng-template pTemplate="header">
+					<div class="flex flex-column md:flex-row md:justify-content-between gap-2">
+						<span class="p-input-icon-left">
+							<i class="pi pi-search"></i>
+							<input type="search" pInputText placeholder="Search by Name" (input)="onFilter(dv, $event)">
+						</span>
+						<p-dropdown [options]="categories" (onChange)="onCategorySelect($event)" [(ngModel)]="c" placeholder="Select a category" optionLabel="nomCategorie"></p-dropdown>
+
+						<p-dataViewLayoutOptions></p-dataViewLayoutOptions>
+					</div>
+				</ng-template>
+
+				<ng-template let-books pTemplate="listItem">
+					<div class="col-12" *ngFor="let b of books">
+						<div class="flex flex-column md:flex-row align-items-center p-3 w-full">
+							<img src="data:image/png;base64,{{b.image}}" [alt]="b.name"
+								class="my-4 md:my-0 w-9 md:w-10rem shadow-2 mr-5" />
+							<div class="flex-1 flex flex-column align-items-center text-center md:text-left">
+								<div class="font-bold text-2xl">{{b.titre}}</div>
+								<div class="mb-2">{{b.nomAuteur}}</div>
+								<div class="flex align-items-center mt-2">
+									<i class="pi pi-tag mr-2"></i>
+									<span class="font-semibold">{{b.categorie.nomCategorie}}</span>
+								</div>
+							</div>
+							<div class="flex align-items-center justify-content-between">
+								<button pButton pRipple type="button" class="p-button-success p-button-text"
+									icon="pi pi-shopping-cart" label="Borrow this book"
+									[disabled]="(b.nbExemplaire-nbExemplaireEmprinte)==0" (click)="emprunt(b)"></button>
+								<br><br><br><br>
+								<button pButton pRipple type="button" class="p-button-help p-button-text"
+									icon="pi pi-shopping-cart" label="Reserve this book"
+									[disabled]="b.nbExemplaire-nbExemplaireEmprinte>0" (click)="reserver(b)"></button>
+							</div>
+						</div>
+					</div>
+				</ng-template>
+
+				<ng-template let-books pTemplate="gridItem">
+					<div class="grid grid-nogutter">
+						<div class="col-12 md:col-4" *ngFor="let b of books">
+							<div class="card m-3 border-1 surface-border">
+								<div class="flex flex-wrap gap-2 align-items-center justify-content-between mb-2">
+									<div class="flex align-items-center">
+										<i class="pi pi-tag mr-2"></i>
+										<span class="font-semibold">{{b.categorie.nomCategorie}}</span>
+									</div>
+								</div>
+								<div class="flex flex-column align-items-center text-center mb-3">
+									<img src="data:image/png;base64,{{b.image}}" [alt]="b.titre"
+										class="w-9 shadow-2 my-3 mx-0" />
+									<div class="text-2xl font-bold">{{b.titre}}</div>
+									<div class="mb-3">{{b.nomAuteur}}</div>
+								</div>
+								<div class="flex align-items-center justify-content-between">
+									<button pButton pRipple type="button" class="p-button-success p-button-text"
+										icon="pi pi-shopping-cart" label="Borrow this book"
+										[disabled]="(b.nbExemplaire - nbExemplaireEmprinte) == 0"
+										(click)="emprunter(b)"></button>
+									<br><br><br><br>
+									<button pButton pRipple type="button" class="p-button-help p-button-text"
+										icon="pi pi-shopping-cart" label="Reserve this book"
+										[disabled]="b.nbExemplaire-nbExemplaireEmprinte>=0"
+										(click)="reserver(b)"></button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</ng-template>
+			</p-dataView>
+		</div>
+	</div>
+</div>
+
+<p-dialog [(visible)]="reservationDialog" [style]="{width: '450px'}" header="Reserve book" [modal]="true"
+	class="p-fluid">
+	<ng-template pTemplate="content">
+		<div class="field text-center">
+			<img src="data:image/png;base64,{{book.image}}" [alt]="book.name"
+				class="my-4 md:my-0 w-9 md:w-10rem shadow-2 mr-5" />
+			<br>
+			<hr>
+			<br>
+			<div class="font-bold text-2xl">{{book.titre}}</div>
+			<div class="mb-2">{{book.nomAuteur}}</div>
+		</div>
+		<br>
+		<hr>
+		<br>
+		<div class="field">
+			<label for="date1">Start date</label>
+			<p-calendar [ngClass]="{'ng-invalid ng-dirty' : submitted && !startDate}" [showIcon]="true"
+				[(ngModel)]="startDate" inputId="icon" dateFormat="dd/mm/yy" required></p-calendar>
+			<small class="ng-dirty ng-invalid" *ngIf="submitted && !startDate">Start date is required.</small>
+		</div>
+		<div class="field">
+			<label for="date2">Start date</label>
+			<p-calendar [ngClass]="{'ng-invalid ng-dirty' : submitted && !endDate}" [showIcon]="true"
+				[(ngModel)]="endDate" inputId="icon" dateFormat="dd/mm/yy" required></p-calendar>
+			<small class="ng-dirty ng-invalid" *ngIf="submitted && !endDate">End date is required.</small>
+		</div>
+		<div class="field text-center">
+
+			<label for="description">
+				<h5>You will be notified as soon as the book is available</h5>
+			</label>
+
+		</div>
+
+	</ng-template>
+	<ng-template pTemplate="footer">
+		<button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text"
+			(click)="hideReservationDialog()"></button>
+		<button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text"
+			(click)="saveReservation()"></button>
+	</ng-template>
+</p-dialog>
+
+<p-dialog [(visible)]="empruntDialog" [style]="{width: '450px'}" header="Borrow book" [modal]="true" class="p-fluid">
+	<ng-template pTemplate="content">
+		<div class="field text-center">
+			<img src="data:image/png;base64,{{book.image}}" [alt]="book.name"
+				class="my-4 md:my-0 w-9 md:w-10rem shadow-2 mr-5" />
+			<br>
+			<hr>
+			<br>
+			<div class="font-bold text-2xl">{{book.titre}}</div>
+			<div class="mb-2">{{book.nomAuteur}}</div>
+		</div>
+		<br>
+		<hr>
+		<br>
+		<div class="field">
+			<label for="date1">Start date</label>
+			<p-calendar [ngClass]="{'ng-invalid ng-dirty' : submitted && !startDate}" [showIcon]="true"
+				[(ngModel)]="startDate" inputId="icon" dateFormat="dd/mm/yy" required></p-calendar>
+			<small class="ng-dirty ng-invalid" *ngIf="submitted && !startDate">Start date is required.</small>
+		</div>
+		<div class="field">
+			<label for="date2">Start date</label>
+			<p-calendar [ngClass]="{'ng-invalid ng-dirty' : submitted && !endDate}" [showIcon]="true"
+				[(ngModel)]="endDate" inputId="icon" dateFormat="dd/mm/yy" required></p-calendar>
+			<small class="ng-dirty ng-invalid" *ngIf="submitted && !endDate">End date is required.</small>
+		</div>
+	</ng-template>
+	<ng-template pTemplate="footer">
+		<button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text"
+			(click)="hideEmpruntDialog()"></button>
+		<button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveEmprunt()"></button>
+	</ng-template>
+</p-dialog>

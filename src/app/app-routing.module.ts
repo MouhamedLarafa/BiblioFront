@@ -17,10 +17,13 @@ import { AppLayoutComponent } from "./layout/app.layout.component";
                     { path: 'pages', loadChildren: () => import('./demo/components/pages/pages.module').then(m => m.PagesModule) }
                     ,
                     { path: 'Admin', loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule) },
+                    { path: 'User', loadChildren: () => import('./user/user.module').then(m => m.UserModule) },
 
                 ]
             },
             { path: 'Authentification', loadChildren: () => import('./authentification/authentification.module').then(m => m.Authentification) },
+            { path: 'auth', loadChildren: () => import('./demo/components/auth/auth.module').then(m => m.AuthModule) },
+
             { path: 'landing', loadChildren: () => import('./demo/components/landing/landing.module').then(m => m.LandingModule) },
             { path: 'notfound', component: NotfoundComponent },
             { path: '**', redirectTo: '/notfound' },

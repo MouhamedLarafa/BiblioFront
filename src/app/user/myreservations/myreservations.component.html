@@ -1,0 +1,42 @@
+<div class="col-12">
+    <div class="card">
+        <h5>My reservations</h5>
+        <p-table [value]="reservations" rowGroupMode="subheader" sortMode="single"  responsiveLayout="scroll" [scrollable]="true" scrollHeight="400px">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Reservation date</th>
+                    <th>Start date</th>
+                    <th>End date</th>
+                    <th>Etat</th>
+                    <th>Book</th>
+                    <th></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-res let-rowIndex="rowIndex">
+                <tr>
+                    <td style="min-width: 200px;">
+                        {{res.dateReservation}}
+                    </td>
+                    <td style="min-width: 200px;">
+                        {{res.dateDebut}}
+                    </td>
+                    
+                    <td style="min-width: 200px;">
+                        {{res.dateFin}}
+                    </td>
+                    <td style="min-width: 200px;">
+                        {{res.prise}}
+                    </td>
+                    <td style="min-width: 200px;">
+                        {{res.livre.titre}}
+                    </td>
+                    <td style="width: 15%;">
+                        <button pButton pRipple type="button" icon="pi pi-trash"
+                            class="p-button p-component p-button-text p-button-icon-only"
+                            (click)="delete(res.idReservation)"></button>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</div>
